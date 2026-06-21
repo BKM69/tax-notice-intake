@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notice Response & Resolution — Intake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16241F;
+    --paper:#EFF2EE;
+    --paper-raised:#FFFFFF;
+    --accent-resolve:#3A7160;
+    --accent-stamp:#C1502E;
+    --muted:#5B645F;
+    --line:#CBD2CA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
+
+  /* ---- Hero / stamp ---- */
+  .hero{
+    position:relative;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:44px 36px 38px;
+    box-shadow:0 1px 0 var(--line);
+  }
+  .case-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    text-transform:uppercase;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(28px,4vw,40px);
+    line-height:1.08;
+    margin:10px 0 14px;
+    max-width:18ch;
+  }
+  .sub{
+    font-size:16px;
+    color:var(--muted);
+    max-width:46ch;
+    margin:0 0 4px;
+  }
+  .stamp{
+    position:absolute;
+    top:30px;
+    right:28px;
+    border:2.5px solid var(--accent-stamp);
+    color:var(--accent-stamp);
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:13px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:7px 12px;
+    border-radius:3px;
+    transform:rotate(6deg);
+    opacity:0.85;
+    white-space:nowrap;
+  }
+  @media (max-width:560px){
+    .stamp{position:static;display:inline-block;transform:rotate(-2deg);margin-top:16px;}
+  }
+
+  /* ---- Shareable post block ---- */
+  .post-block{
+    margin-top:28px;
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:4px;
+    padding:20px 22px;
+    position:relative;
+  }
+  .post-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:block;
+    margin-bottom:10px;
+  }
+  .post-text{
+    font-size:15px;
+    white-space:pre-wrap;
+    margin:0;
+  }
+  .copy-btn{
+    margin-top:14px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:9px 16px;
+    border-radius:3px;
+    cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  .copy-btn:hover{opacity:0.85;}
+  .copy-btn:active{transform:translateY(1px);}
+  .copy-confirm{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--accent-resolve);
+    margin-left:10px;
+    opacity:0;
+    transition:opacity .2s ease;
+  }
+  .copy-confirm.show{opacity:1;}
+
+  /* ---- Perforation divider ---- */
+  .perf{
+    height:0;
+    margin:40px 0;
+    border-top:2px dashed var(--line);
+    position:relative;
+  }
+  .perf::before, .perf::after{
+    content:"";
+    position:absolute;
+    top:-9px;
+    width:18px;height:18px;
+    border-radius:50%;
+    background:var(--paper);
+  }
+  .perf::before{left:-32px;}
+  .perf::after{right:-32px;}
+
+  /* ---- Form section ---- */
+  .form-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:36px 36px 32px;
+  }
+  .form-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:24px;
+    margin:0 0 6px;
+  }
+  .form-sub{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 28px;
+  }
+  fieldset{
+    border:none;
+    margin:0 0 22px;
+    padding:0;
+  }
+  label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:7px;
+  }
+  .hint{
+    font-family:'IBM Plex Sans', sans-serif;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--muted);
+    font-size:12.5px;
+    display:block;
+    margin-top:4px;
+  }
+  input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:11px 12px;
+  }
+  textarea{resize:vertical;min-height:90px;}
+  input:focus, select:focus, textarea:focus{
+    outline:2px solid var(--accent-resolve);
+    outline-offset:1px;
+    border-color:var(--accent-resolve);
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:560px){.row2{grid-template-columns:1fr;}}
+
+  .upload-box{
+    border:1.5px dashed var(--line);
+    border-radius:4px;
+    padding:18px;
+    text-align:center;
+    background:var(--paper);
+  }
+  .upload-box input[type=file]{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  #preview{
+    margin-top:14px;
+    max-width:100%;
+    max-height:220px;
+    border-radius:3px;
+    border:1px solid var(--line);
+    display:none;
+  }
+  #file-name{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--accent-resolve);
+    display:block;
+    margin-top:8px;
+  }
+
+  .submit-row{
+    margin-top:8px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .submit-btn{
+    background:var(--accent-resolve);
+    color:#fff;
+    border:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:13px 22px;
+    border-radius:3px;
+    cursor:pointer;
+  }
+  .submit-btn:hover{opacity:0.92;}
+  .submit-note{
+    font-size:13px;
+    color:var(--muted);
+    max-width:36ch;
+  }
+  .reminder{
+    margin-top:18px;
+    font-size:13px;
+    color:var(--accent-stamp);
+    background:rgba(193,80,46,0.08);
+    border-left:3px solid var(--accent-stamp);
+    padding:10px 14px;
+    border-radius:0 3px 3px 0;
+    display:none;
+  }
+  .reminder.show{display:block;}
+
+  .footer-note{
+    text-align:center;
+    color:var(--muted);
+    font-size:12.5px;
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO + SHAREABLE POST -->
+  <div class="hero">
+    <span class="stamp">don't panic</span>
+    <span class="case-no">Notice Response &amp; Resolution</span>
+    <h1>Got a letter from the IRS or your state?</h1>
+    <p class="sub">Most notices are fixable — but the deadline on it is real. Send me a photo and a few details below, and I'll tell you what it actually means before our call.</p>
+
+    <div class="post-block">
+      <span class="post-label">Shareable post — copy &amp; paste anywhere</span>
+      <p class="post-text" id="post-text">Hey — quick thing that might be useful: if you or anyone you know gets a notice from the IRS or a state tax department, send it my way before doing anything. I have an accounting background and help small business owners figure out what these letters actually mean and how to respond. Most are fixable, and the deadlines matter more than people realize.
+
+No charge for the first read — just fill out this short form and attach a photo of the notice: [LINK]</p>
+      <button class="copy-btn" id="copy-btn" type="button">Copy post text</button>
+      <span class="copy-confirm" id="copy-confirm">Copied</span>
+    </div>
+  </div>
+
+  <div class="perf"></div>
+
+  <!-- INTAKE FORM -->
+  <div class="form-card">
+    <h2 class="form-title">Notice Intake</h2>
+    <p class="form-sub">Takes about 3 minutes. I'll review this before we talk so the call is fast and useful.</p>
+
+    <form id="intake-form">
+      <fieldset>
+        <label for="name">Your name</label>
+        <input type="text" id="name" required>
+      </fieldset>
+
+      <fieldset class="row2">
+        <div>
+          <label for="business">Business name</label>
+          <input type="text" id="business">
+        </div>
+        <div>
+          <label for="entity">Entity type</label>
+          <select id="entity">
+            <option value="">Select one</option>
+            <option>Sole proprietor</option>
+            <option>Single-member LLC</option>
+            <option>Multi-member LLC</option>
+            <option>S-Corp</option>
+            <option>C-Corp</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="row2">
+        <div>
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+      </fieldset>
+
+      <fieldset class="row2">
+        <div>
+          <label for="agency">Who sent the notice?</label>
+          <select id="agency">
+            <option value="">Select one</option>
+            <option>IRS</option>
+            <option>State tax agency</option>
+            <option>State sales tax agency</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+        <div>
+          <label for="deadline">Response deadline on the notice
+            <span class="hint">If there is one printed on it</span>
+          </label>
+          <input type="date" id="deadline">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="notes">Briefly, what does the notice seem to be about?
+          <span class="hint">e.g. "says I owe $4,200 in payroll tax" — just your best guess is fine</span>
+        </label>
+        <textarea id="notes"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <label for="photo">Photo or scan of the notice</label>
+        <div class="upload-box">
+          <input type="file" id="photo" accept="image/*,.pdf">
+          <span id="file-name"></span>
+          <img id="preview" alt="Notice preview">
+        </div>
+      </fieldset>
+
+      <div class="submit-row">
+        <button type="submit" class="submit-btn">Send for review</button>
+        <span class="submit-note">This opens an email to me with your details filled in.</span>
+      </div>
+
+      <div class="reminder" id="reminder">
+        One more step: your email app can't attach the photo automatically — please attach the notice photo/PDF to the email before you hit send.
+      </div>
+    </form>
+  </div>
+
+  <p class="footer-note">Your information is used only to review your notice and prepare for our call.</p>
+</div>
+
+<script>
+  const copyBtn = document.getElementById('copy-btn');
+  const copyConfirm = document.getElementById('copy-confirm');
+  copyBtn.addEventListener('click', async () => {
+    const text = document.getElementById('post-text').innerText;
+    try{
+      await navigator.clipboard.writeText(text);
+      copyConfirm.classList.add('show');
+      setTimeout(() => copyConfirm.classList.remove('show'), 1800);
+    }catch(e){
+      alert('Could not copy automatically — select the text above and copy manually.');
+    }
+  });
+
+  const photoInput = document.getElementById('photo');
+  const preview = document.getElementById('preview');
+  const fileNameEl = document.getElementById('file-name');
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+    if(!file) return;
+    fileNameEl.textContent = file.name;
+    if(file.type.startsWith('image/')){
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.style.display = 'none';
+    }
+  });
+
+  document.getElementById('intake-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const get = id => document.getElementById(id).value || '—';
+    const body = [
+      'New notice intake submission',
+      '',
+      'Name: ' + get('name'),
+      'Business: ' + get('business'),
+      'Entity type: ' + get('entity'),
+      'Phone: ' + get('phone'),
+      'Email: ' + get('email'),
+      'Notice from: ' + get('agency'),
+      'Deadline on notice: ' + get('deadline'),
+      'What it seems to be about: ' + get('notes'),
+      '',
+      '(Remember to attach the photo/PDF of the notice to this email)'
+    ].join('\n');
+
+    const subject = 'Notice intake — ' + get('name');
+    const mailto = 'mailto:YOUR-EMAIL@example.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+    document.getElementById('reminder').classList.add('show');
+    window.location.href = mailto;
+  });
+</script>
+</body>
+</html>
